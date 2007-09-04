@@ -19,20 +19,20 @@ import javax.swing.ImageIcon;
  */
 public class ImageHelper {
 
-    private final static Map<String, ImageIcon> iconCache = initCache();
+    private static final Map<String, ImageIcon> iconCache = initCache();
     private static ImageHelper instance;
-    
+
     /** Creates a new instance of ImageHelper */
     private ImageHelper() {
     }
 
-    public synchronized static ImageHelper getInstance() {
+    public static synchronized ImageHelper getInstance() {
         if (instance == null) {
             instance = new ImageHelper();
         }
         return instance;
     }
-    
+
     private static Map<String, ImageIcon> initCache() {
         return new HashMap<String, ImageIcon>();
     }
@@ -40,11 +40,9 @@ public class ImageHelper {
     public synchronized ImageIcon getIcon(String name) {
         ImageIcon result = iconCache.get(name);
         if (result == null) {
-            result = new javax.swing.ImageIcon(getClass().
-                    getResource(name));
+            result = new javax.swing.ImageIcon(getClass().getResource(name));
             iconCache.put(name, result);
         }
         return result;
     }
-    
 }

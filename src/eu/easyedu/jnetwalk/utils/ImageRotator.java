@@ -19,38 +19,12 @@ import java.awt.image.BufferedImage;
  */
 public class ImageRotator {
     
-    /**
-     * Constant to specify that the bounding box should be not be changed
-     * for any angle of rotation when creating the rotated image.  This
-     * means the returned image will be the same size as the given image.
-     * Of course, that also means the corners of the image may be cut off.
-     */
-    public static final int NO_BOUNDING_BOX = 0;
-    
-    /**
-     * Constant to specify that the exact bounding box should be used for
-     * the specified angle of rotation when creating the rotated image.
-     * This is the default option.  When used, the rotated image may be
-     * larger then the source image, but no larger then needed to fit the
-     * rotated image exactly.  Therefore, rotating the same image to various
-     * angles may result in varying image sizes.
-     */
-    public static final int EXACT_BOUNDING_BOX = 1;
-    
-    /**
-     * Constant to specify that the largest bounding box should be used when
-     * creating the rotated image.  When used, the rotated image will be
-     * larger then the source image, but all rotated images of that same
-     * source image will be the same size, regardless of the angle of
-     * rotation.  This may result in significant "empty space" between the
-     * edge of the returned image and the actual drawn pixel areas.
-     */
-    public static final int LARGEST_BOUNDING_BOX = 2;
+
     
     /** Creates a new instance of ImageRotator */
-//    
-//    public ImageRotator() {
-//    }
+    
+    private ImageRotator() {
+    }
     
     /**
      * Rotates the specified image the specified number of degrees.  The
@@ -68,7 +42,7 @@ public class ImageRotator {
      *                     can be null
      */
     public static BufferedImage rotateDegrees(Image image, int imageWidth, int imageHeight, 
-            double degrees, int bbm, Paint background) {
+            double degrees, BoundingBox bbm, Paint background) {
         return rotateRadians(image, imageWidth, imageHeight, Math.toRadians(degrees), bbm, background);
     }
     
@@ -90,15 +64,15 @@ public class ImageRotator {
      *                     can be null
      */
     public static BufferedImage rotateRadians(Image image, int imageWidth, int imageHeight, 
-            double radians, int bbm, Paint background) {
+            double radians, BoundingBox bbm, Paint background) {
         // get the original image's width and height
 //        int iw = imageWidth; //image.getWidth(null);
 //        int ih = imageHeight; //image.getHeight(null);
         // calculate the new image's size based on bounding box mode
         Dimension dim;
-        if(bbm == NO_BOUNDING_BOX) {
+        if(bbm.equals(BoundingBox.NO_BOX)) {
             dim = new Dimension(imageWidth, imageHeight);
-        } else if(bbm == LARGEST_BOUNDING_BOX) {
+        } else if(bbm.equals(BoundingBox.LARGEST)) {
             dim = getLargestBoundingBox(imageWidth, imageHeight);
         } else { // EXACT_BOUNDING_BOX
             dim = getBoundingBox(imageWidth, imageHeight, Math.toDegrees(radians));
