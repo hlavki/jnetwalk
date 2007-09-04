@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -294,7 +295,7 @@ public class Board extends javax.swing.JPanel {
         return result;
     }
 
-    public void rotate(int index, final RotateDirection direction) {
+    protected void rotate(final int index, final RotateDirection direction) {
         final Cell cell = board[index];
         final int d = cell.getDirections();
         if ((d == Cell.FREE) || (d == Cell.NONE) || isGameOver() || cell.isLocked()) {
@@ -314,7 +315,7 @@ public class Board extends javax.swing.JPanel {
                         int inc = direction.equals(RotateDirection.LEFT) ? -6 : 6;
                         cell.rotate(inc);
                         try {
-                            Thread.sleep(10);
+                            if (i < 13) Thread.sleep(5);
                         } catch (InterruptedException e) {
                         }
                     }
@@ -323,20 +324,19 @@ public class Board extends javax.swing.JPanel {
                 }
 
                 @Override
-                protected void done() {
+                public void done() {
                     if (updateConnections()) {
+                    }
+                    if (isGameOver()) {
+                        blink(index);
+                        endGame();
                     }
                 }
             };
             anim.execute();
-            System.out.println("angle: " + cell.getAngle());
+
 //            cell.rotate(direction.equals(RotateDirection.RIGHT) ? -90 : 90);
             addClick();
-
-            if (isGameOver()) {
-                blink(index);
-                endGame();
-            }
         }
     }
 
