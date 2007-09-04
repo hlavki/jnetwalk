@@ -8,5 +8,7 @@
     <import file="nbproject/jnlp-impl.xml"/>
     <target depends="jnlp" name="-post-jar">
         <signjar jar="${dist.jar}" alias="hlavki" storepass="${alias.password}"/>
+        <signjar jar="${dist.dir}/lib/swing-layout-1.0.2.jar" alias="hlavki" storepass="${alias.password}"/>
+        <signjar jar="${dist.dir}/lib/swing-worker-1.1.jar" alias="hlavki" storepass="${alias.password}"/>
     </target>
 </project>
