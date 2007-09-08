@@ -44,15 +44,15 @@ public class Settings implements Serializable {
         scores = new EnumMap<Skill, SortedSet<Score>>(Skill.class);
     }
     
-    public Skill getSkill() {
+    public final Skill getSkill() {
         return skill;
     }
     
-    public void setSkill(Skill skill) {
+    public final void setSkill(Skill skill) {
         this.skill = skill;
     }
     
-    public void addNewScore(Score newScore) {
+    public final void addNewScore(Score newScore) {
         SortedSet<Score> skillScores = getSkillScores();
         skillScores.add(newScore);
         while (skillScores.size() > MAX_SCORE_SIZE) {
@@ -60,7 +60,7 @@ public class Settings implements Serializable {
         }
     }
     
-    public SortedSet<Score> getSkillScores(Skill skill) {
+    public final SortedSet<Score> getSkillScores(Skill skill) {
         SortedSet<Score> skillScores = scores.get(skill);
         if (skillScores == null) {
             skillScores = new TreeSet<Score>();
@@ -69,15 +69,16 @@ public class Settings implements Serializable {
         return skillScores;
     }
     
-    public SortedSet<Score> getSkillScores() {
+    public final SortedSet<Score> getSkillScores() {
         return getSkillScores(getSkill());
     }
     
-    public String toString() {
+    @Override
+    public final String toString() {
         return getSkillScores().toString();
     }
     
-    public static Settings load() {
+    public final static Settings load() {
         log.info("Loading settings...");
         Settings settings;
         try {
@@ -85,7 +86,7 @@ public class Settings implements Serializable {
             ObjectInputStream ois = new ObjectInputStream(fin);
             settings = (Settings) ois.readObject();
             ois.close();
-            log.info("Settings loaded successfully... ");
+            log.info("Settings from " + FILE_NAME + " loaded successfully...");
         } catch (Exception e) {
             log.log(Level.WARNING, "Settings file (" + FILE_NAME + 
                     ") not found or corrupted. Creating new...", e);
@@ -94,7 +95,8 @@ public class Settings implements Serializable {
         return settings;
     }
     
-    public void save() {
+    public final void save() {
+        log.info("Saving settings to " + FILE_NAME);
         try {
             FileOutputStream fout = new FileOutputStream(FILE_NAME);
             ObjectOutputStream oos = new ObjectOutputStream(fout);
