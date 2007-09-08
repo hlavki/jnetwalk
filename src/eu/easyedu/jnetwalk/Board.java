@@ -104,7 +104,7 @@ public class Board extends javax.swing.JPanel {
     }
 
     public void newGame() {
-        log.info("New game...");
+        log.info("Starting new game with skill " + getSettings().getSkill().toDefaultString());
         for (int i = 0; i < boardSize * boardSize; i++) {
             board[i].clear();
         }
@@ -221,24 +221,24 @@ public class Board extends javax.swing.JPanel {
             Cell dCell = dCell(cell);
             Cell lCell = lCell(cell);
 
-            if (((cell.getDirections() & Cell.U) > 0) && (uCell != null) &&
-                    ((uCell.getDirections() & Cell.D) > 0) && !newConnection[uCell.getIndex()] && !uCell.isRotated()) {
+            if (((cell.getDirections() & Cell.U) > 0) && (uCell != null) && ((uCell.getDirections() & Cell.D) > 0) &&
+                    !newConnection[uCell.getIndex()] && !uCell.isRotated()) {
                 newConnection[uCell.getIndex()] = true;
                 cellList.add(uCell);
             }
 
-            if (((cell.getDirections() & Cell.R) > 0) && (rCell != null) &&
-                    ((rCell.getDirections() & Cell.L) > 0) && !newConnection[rCell.getIndex()] && !rCell.isRotated()) {
+            if (((cell.getDirections() & Cell.R) > 0) && (rCell != null) && ((rCell.getDirections() & Cell.L) > 0) &&
+                    !newConnection[rCell.getIndex()] && !rCell.isRotated()) {
                 newConnection[rCell.getIndex()] = true;
                 cellList.add(rCell);
             }
-            if (((cell.getDirections() & Cell.D) > 0) && (dCell != null) &&
-                    ((dCell.getDirections() & Cell.U) > 0) && !newConnection[dCell.getIndex()] && !dCell.isRotated()) {
+            if (((cell.getDirections() & Cell.D) > 0) && (dCell != null) && ((dCell.getDirections() & Cell.U) > 0) &&
+                    !newConnection[dCell.getIndex()] && !dCell.isRotated()) {
                 newConnection[dCell.getIndex()] = true;
                 cellList.add(dCell);
             }
-            if (((cell.getDirections() & Cell.L) > 0) && (lCell != null) &&
-                    ((lCell.getDirections() & Cell.R) > 0) && !newConnection[lCell.getIndex()] && !lCell.isRotated()) {
+            if (((cell.getDirections() & Cell.L) > 0) && (lCell != null) && ((lCell.getDirections() & Cell.R) > 0) &&
+                    !newConnection[lCell.getIndex()] && !lCell.isRotated()) {
                 newConnection[lCell.getIndex()] = true;
                 cellList.add(lCell);
             }
@@ -315,7 +315,8 @@ public class Board extends javax.swing.JPanel {
                         int inc = direction.equals(RotateDirection.LEFT) ? -6 : 6;
                         cell.rotate(inc);
                         try {
-                            if (i < 13) Thread.sleep(5);
+                            if (i < 13)
+                                Thread.sleep(5);
                         } catch (InterruptedException e) {
                         }
                     }
@@ -336,14 +337,14 @@ public class Board extends javax.swing.JPanel {
             anim.execute();
 
 //            cell.rotate(direction.equals(RotateDirection.RIGHT) ? -90 : 90);
-            addClick();
+//            addClick();
         }
     }
 
     protected void endGame() {
-        log.info(" Game with skill " + getSettings().getSkill() + " was successfully ended in " + getClickCount() +
-                " clicks");
-        getSettings().addNewScore(new Score(getClickCount(), new Date(), "Hlavki"));
+        log.info(" Game with skill " + getSettings().getSkill().toDefaultString() + " was successfully ended in " +
+                getClickCount() + " clicks");
+        getSettings().addNewScore(new Score(getClickCount(), new Date(), System.getProperty("user.name")));
         fireGameOverEvent();
 //        int n = JOptionPane.showConfirmDialog(this, "Cool. Do you wish to start new game?",
 //                "Game Over", JOptionPane.YES_NO_OPTION);

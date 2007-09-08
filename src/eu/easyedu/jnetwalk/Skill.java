@@ -29,8 +29,13 @@ public enum Skill {
         return boardSize;
     }
 
+    @Override
     public String toString() {
         String name = super.toString().toLowerCase();
         return java.util.ResourceBundle.getBundle("eu/easyedu/jnetwalk/Bundle").getString(name + ".level.menu.item");
+    }
+
+    public String toDefaultString() {
+        return super.toString();
     }
 }
