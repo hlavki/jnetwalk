@@ -108,9 +108,12 @@ public class Board extends javax.swing.JPanel {
         for (int i = 0; i < boardSize * boardSize; i++) {
             board[i].clear();
         }
+        
+        Skill skill = getSettings().getSkill();
+        final int size = skill.getBoardSize();
 
-        final int size = getSettings().getSkill().getBoardSize();
-
+        wrapped = (skill == Skill.EXPERT);
+        
         final int start = (getBoardSize() - size) / 2;
         final int rootrow = random.nextInt(size);
         final int rootcol = random.nextInt(size);
