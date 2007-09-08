@@ -6,15 +6,10 @@
 
 package eu.easyedu.jnetwalk;
 
+import eu.easyedu.jnetwalk.utils.AudioPlayer;
 import java.awt.Dimension;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,11 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import org.jdesktop.swingworker.SwingWorker;
 
 /**
@@ -105,15 +96,16 @@ public class Board extends javax.swing.JPanel {
 
     public void newGame() {
         log.info("Starting new game with skill " + getSettings().getSkill().toDefaultString());
+        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/start.wav").start();
         for (int i = 0; i < boardSize * boardSize; i++) {
             board[i].clear();
         }
-        
+
         Skill skill = getSettings().getSkill();
         final int size = skill.getBoardSize();
 
         wrapped = (skill == Skill.EXPERT);
-        
+
         final int start = (getBoardSize() - size) / 2;
         final int rootrow = random.nextInt(size);
         final int rootcol = random.nextInt(size);
@@ -302,11 +294,11 @@ public class Board extends javax.swing.JPanel {
         final Cell cell = board[index];
         final int d = cell.getDirections();
         if ((d == Cell.FREE) || (d == Cell.NONE) || isGameOver() || cell.isLocked()) {
+            new AudioPlayer("/eu/easyedu/jnetwalk/sounds/click.wav").start();
             blink(index);
         } else {
-
-
-
+            new AudioPlayer("/eu/easyedu/jnetwalk/sounds/turn.wav").start();
+            
             cell.rotate(direction.equals(RotateDirection.LEFT) ? -6 : 6);
             updateConnections();
 
@@ -330,8 +322,10 @@ public class Board extends javax.swing.JPanel {
                 @Override
                 public void done() {
                     if (updateConnections()) {
+                        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/connect.wav").start();
                     }
                     if (isGameOver()) {
+                        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/win.wav").start();
                         blink(index);
                         endGame();
                     }
@@ -340,7 +334,7 @@ public class Board extends javax.swing.JPanel {
             anim.execute();
 
 //            cell.rotate(direction.equals(RotateDirection.RIGHT) ? -90 : 90);
-//            addClick();
+            addClick();
         }
     }
 

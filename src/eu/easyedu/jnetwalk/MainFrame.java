@@ -19,19 +19,21 @@ import javax.swing.plaf.FontUIResource;
  * @author  hlavki
  */
 public class MainFrame extends javax.swing.JFrame {
-    
+
     private static final Logger log = Logger.getLogger(MainFrame.class.getName());
     private Board board;
-    
+
     /** Creates new form MainFrame */
     public MainFrame() {
         initComponents();
         board = new Board(new PropertyChangeListener() {
+
             public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
                 statusLabel.setText("Click: " + propertyChangeEvent.getNewValue());
             }
         });
         board.addGameOverListener(new BoardEventAdapter() {
+
             public void gameOverEvent(BoardEvent robotEvent) {
                 gameOverPerformed(robotEvent);
             }
@@ -39,7 +41,7 @@ public class MainFrame extends javax.swing.JFrame {
         getContentPane().add(board, java.awt.BorderLayout.CENTER);
         setLevelComboBox();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -198,7 +200,7 @@ public class MainFrame extends javax.swing.JFrame {
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-217)/2, (screenSize.height-281)/2, 217, 281);
     }// </editor-fold>//GEN-END:initComponents
-    
+
 private void showHighScoresMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showHighScoresMenuItemActionPerformed
     showStatistics();
 }//GEN-LAST:event_showHighScoresMenuItemActionPerformed
@@ -213,7 +215,7 @@ private void showHighScoresButtonActionPerformed(java.awt.event.ActionEvent evt)
 
 private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
     showAboutDialog();//GEN-LAST:event_aboutMenuItemActionPerformed
-}                                             
+    }
 
 private void newGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameMenuItemActionPerformed
     board.newGame();
@@ -221,18 +223,22 @@ private void newGameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//G
 
 private void expertLevelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expertLevelMenuItemActionPerformed
     board.setSkill(Skill.EXPERT);
+    getBoard().newGame();
 }//GEN-LAST:event_expertLevelMenuItemActionPerformed
 
 private void masterLevelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masterLevelMenuItemActionPerformed
     board.setSkill(Skill.MASTER);
+    getBoard().newGame();
 }//GEN-LAST:event_masterLevelMenuItemActionPerformed
 
 private void normalLevelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalLevelMenuItemActionPerformed
     board.setSkill(Skill.NORMAL);
+    getBoard().newGame();
 }//GEN-LAST:event_normalLevelMenuItemActionPerformed
 
 private void noviceLevelMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noviceLevelMenuItemActionPerformed
     board.setSkill(Skill.NOVICE);
+    getBoard().newGame();
 }//GEN-LAST:event_noviceLevelMenuItemActionPerformed
 
 private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
@@ -244,71 +250,79 @@ private void quitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_quitMenuItemActionPerformed
 
 /**
- * @param args the command line arguments
- */
-public static void main(String args[]) {
-    setUIFont(new javax.swing.plaf.FontUIResource("Dialog", Font.PLAIN, 11));
-    java.awt.EventQueue.invokeLater(new Runnable() {
-        public void run() {
-            MainFrame mainFrame = new MainFrame();
-            mainFrame.setBoardSize();
-            mainFrame.pack();
-            mainFrame.setResizable(false);
-            mainFrame.setVisible(true);
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        setUIFont(new javax.swing.plaf.FontUIResource("Dialog", Font.PLAIN, 11));
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                MainFrame mainFrame = new MainFrame();
+                mainFrame.setBoardSize();
+                mainFrame.pack();
+                mainFrame.setResizable(false);
+                mainFrame.setVisible(true);
+                mainFrame.getBoard().newGame();
+            }
+        });
+    }
+
+    protected static void setUIFont(FontUIResource f) {
+        //
+        // sets the default font for all Swing components.
+        // ex.
+        //  setUIFont (new javax.swing.plaf.FontUIResource("Serif",Font.ITALIC,12));
+        //
+        java.util.Enumeration<Object> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof javax.swing.plaf.FontUIResource)
+                UIManager.put(key, f);
         }
-    });
-}
-protected static void setUIFont(FontUIResource f) {
-    //
-    // sets the default font for all Swing components.
-    // ex.
-    //  setUIFont (new javax.swing.plaf.FontUIResource("Serif",Font.ITALIC,12));
-    //
-    java.util.Enumeration<Object> keys = UIManager.getDefaults().keys();
-    while (keys.hasMoreElements()) {
-        Object key = keys.nextElement();
-        Object value = UIManager.get(key);
-        if (value instanceof javax.swing.plaf.FontUIResource)
-            UIManager.put(key, f);
     }
-}
 
-protected void showStatistics() {
-    StatisticsDialog statisticsDialog = new StatisticsDialog(board.getSettings(), this, true);
-    statisticsDialog.setVisible(true);
-}
-
-protected void showAboutDialog() {
-    AboutDialog aboutDialog = new AboutDialog(this, true);
-    aboutDialog.setVisible(true);
-}
-
-protected void setBoardSize() {
-    int width = board.getPreferredSize().width - board.getSize().width;
-    int height = board.getPreferredSize().height - board.getSize().height;
-    log.fine("MainFrame size delta = " + width + " : " + height);
-    setSize(new Dimension(getSize().width + width, getSize().height + height));
-}
-
-public void gameOverPerformed(BoardEvent evt) {
-    showStatistics();
-}
-
-public void setLevelComboBox() {
-    switch (board.getSettings().getSkill()) {
-    case NOVICE:
-        noviceLevelMenuItem.setSelected(true); break;
-    case NORMAL:
-        normalLevelMenuItem.setSelected(true); break;
-    case MASTER:
-        masterLevelMenuItem.setSelected(true); break;
-    case EXPERT:
-        expertLevelMenuItem.setSelected(true); break;
+    protected void showStatistics() {
+        StatisticsDialog statisticsDialog = new StatisticsDialog(board.getSettings(), this, true);
+        statisticsDialog.setVisible(true);
     }
-}
 
-    // Variables declaration - do not modify                     
+    protected void showAboutDialog() {
+        AboutDialog aboutDialog = new AboutDialog(this, true);
+        aboutDialog.setVisible(true);
+    }
 
+    protected void setBoardSize() {
+        int width = board.getPreferredSize().width - board.getSize().width;
+        int height = board.getPreferredSize().height - board.getSize().height;
+        log.fine("MainFrame size delta = " + width + " : " + height);
+        setSize(new Dimension(getSize().width + width, getSize().height + height));
+    }
+
+    public void gameOverPerformed(BoardEvent evt) {
+        showStatistics();
+    }
+
+    public void setLevelComboBox() {
+        switch (board.getSettings().getSkill()) {
+            case NOVICE:
+                noviceLevelMenuItem.setSelected(true);
+                break;
+            case NORMAL:
+                normalLevelMenuItem.setSelected(true);
+                break;
+            case MASTER:
+                masterLevelMenuItem.setSelected(true);
+                break;
+            case EXPERT:
+                expertLevelMenuItem.setSelected(true);
+                break;
+        }
+    }
+
+    public Board getBoard() {
+        return board;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JRadioButtonMenuItem expertLevelMenuItem;
@@ -330,5 +344,4 @@ public void setLevelComboBox() {
     private javax.swing.JLabel statusLabel;
     private javax.swing.JToolBar toolbar;
     // End of variables declaration//GEN-END:variables
-    
 }
