@@ -16,7 +16,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.Map;
 import java.util.TreeSet;
@@ -37,11 +36,13 @@ public class Settings implements Serializable {
     private Skill skill;
     private Map<Skill, SortedSet<Score>> scores;
     private transient final static int MAX_SCORE_SIZE = 10;
+    private boolean playSound;
     
     /** Creates a new instance of Settings */
     public Settings() {
         skill = Skill.NOVICE;
         scores = new EnumMap<Skill, SortedSet<Score>>(Skill.class);
+        playSound = true;
     }
     
     public final Skill getSkill() {
@@ -71,6 +72,14 @@ public class Settings implements Serializable {
     
     public final SortedSet<Score> getSkillScores() {
         return getSkillScores(getSkill());
+    }
+
+    public boolean isPlaySound() {
+        return playSound;
+    }
+
+    public void setPlaySound(boolean playSound) {
+        this.playSound = playSound;
     }
     
     @Override

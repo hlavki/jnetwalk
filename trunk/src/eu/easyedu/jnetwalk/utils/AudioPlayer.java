@@ -13,6 +13,7 @@ package eu.easyedu.jnetwalk.utils;
  *
  * @author hlavki
  */
+import eu.easyedu.jnetwalk.Settings;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,15 +28,19 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioPlayer extends Thread {
 
     private String fileName;
+    private Settings settings;
     private static final transient Map<String, Clip> cache = new HashMap<String, Clip>();
 
-    public AudioPlayer(String wavfile) {
+    public AudioPlayer(String wavfile, Settings settings) {
         fileName = wavfile;
+        this.settings = settings;
     }
 
     @Override
     public void run() {
-        playSound();
+        if (settings.isPlaySound()) {
+            playSound();
+        }
     }
 
     private void playSound() {
@@ -71,7 +76,6 @@ public class AudioPlayer extends Thread {
         } catch (UnsupportedAudioFileException e) {
         }
     }
-
 //    @Override
 //    protected void finalize() throws Throwable {
 //        super.finalize();
@@ -80,6 +84,4 @@ public class AudioPlayer extends Thread {
 //            clip.close();
 //        }
 //    }
-
-
 }
