@@ -96,7 +96,7 @@ public class Board extends javax.swing.JPanel {
 
     public void newGame() {
         log.info("Starting new game with skill " + getSettings().getSkill().toDefaultString());
-        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/start.wav").start();
+        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/start.wav", getSettings()).start();
         for (int i = 0; i < boardSize * boardSize; i++) {
             board[i].clear();
         }
@@ -294,10 +294,10 @@ public class Board extends javax.swing.JPanel {
         final Cell cell = board[index];
         final int d = cell.getDirections();
         if ((d == Cell.FREE) || (d == Cell.NONE) || isGameOver() || cell.isLocked()) {
-            new AudioPlayer("/eu/easyedu/jnetwalk/sounds/click.wav").start();
+            new AudioPlayer("/eu/easyedu/jnetwalk/sounds/click.wav", getSettings()).start();
             blink(index);
         } else {
-            new AudioPlayer("/eu/easyedu/jnetwalk/sounds/turn.wav").start();
+            new AudioPlayer("/eu/easyedu/jnetwalk/sounds/turn.wav", getSettings()).start();
             
             cell.rotate(direction.equals(RotateDirection.LEFT) ? -6 : 6);
             updateConnections();
@@ -322,10 +322,10 @@ public class Board extends javax.swing.JPanel {
                 @Override
                 public void done() {
                     if (updateConnections()) {
-                        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/connect.wav").start();
+                        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/connect.wav", getSettings()).start();
                     }
                     if (isGameOver()) {
-                        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/win.wav").start();
+                        new AudioPlayer("/eu/easyedu/jnetwalk/sounds/win.wav", getSettings()).start();
                         blink(index);
                         endGame();
                     }
