@@ -112,6 +112,7 @@ public class MainFrame extends javax.swing.JFrame {
         statusLabel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         getContentPane().add(statusLabel, java.awt.BorderLayout.PAGE_END);
 
+        gameMenu.setMnemonic(java.util.ResourceBundle.getBundle("eu/easyedu/jnetwalk/Bundle").getString("game.menu.item.mnemonics").charAt(0));
         gameMenu.setText(bundle.getString("game.menu.item")); // NOI18N
 
         newGameMenuItem.setText(bundle.getString("new.game.menu.item")); // NOI18N
@@ -131,6 +132,7 @@ public class MainFrame extends javax.swing.JFrame {
         gameMenu.add(showHighScoresMenuItem);
         gameMenu.add(quitMenuItemSeparator);
 
+        quitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         quitMenuItem.setText(bundle.getString("close.game.menu.item")); // NOI18N
         quitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
