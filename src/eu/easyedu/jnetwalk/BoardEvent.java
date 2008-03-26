@@ -6,7 +6,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package eu.easyedu.jnetwalk;
 
 /**
@@ -14,9 +13,15 @@ package eu.easyedu.jnetwalk;
  * @author hlavki
  */
 public class BoardEvent {
-    
+
+    private final Score score;
+
     /** Creates a new instance of BoardEvent */
-    public BoardEvent() {
+    public BoardEvent(Score score) {
+	this.score = score;
     }
-    
+
+    public Score getScore() {
+	return score;
+    }
 }

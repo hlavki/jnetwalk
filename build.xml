@@ -5,10 +5,9 @@
 <project basedir="." default="default" name="JNetWalk">
     <description>Builds, tests, and runs the project JNetWalk.</description>
     <import file="nbproject/build-impl.xml"/>
-    <import file="nbproject/jnlp-impl.xml"/>
-    <target depends="jnlp" name="-post-jar">
-        <signjar jar="${dist.jar}" alias="hlavki" storepass="${alias.password}"/>
-        <signjar jar="${dist.dir}/lib/swing-layout-1.0.2.jar" alias="hlavki" storepass="${alias.password}"/>
-        <signjar jar="${dist.dir}/lib/swing-worker-1.1.jar" alias="hlavki" storepass="${alias.password}"/>
+    <target name="-post-jar">
+        <signjar alias="default" jar="${dist.jar}" storepass="${alias.password}"/>
+        <signjar alias="default" jar="${dist.dir}/lib/swing-layout-1.0.3.jar" storepass="${alias.password}"/>
+        <signjar alias="default" jar="${dist.dir}/lib/swing-worker-1.1.jar" storepass="${alias.password}"/>
     </target>
 </project>

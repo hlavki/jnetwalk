@@ -3,9 +3,9 @@
  *
  * Created on Nedeľa, 2007, marec 25, 19:43
  */
-
 package eu.easyedu.jnetwalk;
 
+import eu.easyedu.jnetwalk.utils.ColorTextCellRenderer;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -15,6 +15,7 @@ import javax.swing.ListModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 /**
@@ -22,32 +23,35 @@ import javax.swing.table.TableModel;
  * @author  hlavki
  */
 public class StatisticsDialog extends javax.swing.JDialog {
-    
+
     private final static Logger log = Logger.getLogger(StatisticsDialog.class.getName());
     private final static String DATE_FORMAT = "yyyy.MM.dd HH:mm:ss";
     private DefaultListModel levelModel;
     private DefaultTableModel statisticsTableModel;
     private ResourceBundle bundle;
     private Settings settings;
+    private int newScoreIndex;
     private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-    
+
     /** Creates new form StatisticsDialog */
-    public StatisticsDialog(Settings settings, java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        this.settings = settings;
-        bundle = ResourceBundle.getBundle("eu/easyedu/jnetwalk/Bundle");
-        initComponents();
-        scoreTable.getColumnModel().getColumn(0).setPreferredWidth(70);
-        scoreTable.getColumnModel().getColumn(1).setPreferredWidth(70);
-        scoreTable.getColumnModel().getColumn(2).setPreferredWidth(170);
-        
-        TableCellRenderer tcr = scoreTable.getDefaultRenderer(String.class);
-        DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
-        dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
-        
-        skillList.setSelectedValue(settings.getSkill(), true);
+    public StatisticsDialog(Settings settings, int newScoreIndex, java.awt.Frame parent, boolean modal) {
+	super(parent, modal);
+	this.settings = settings;
+	this.newScoreIndex = newScoreIndex;
+	bundle = ResourceBundle.getBundle("eu/easyedu/jnetwalk/Bundle");
+	initComponents();
+	scoreTable.getColumnModel().getColumn(0).setPreferredWidth(70);
+	scoreTable.getColumnModel().getColumn(1).setPreferredWidth(70);
+	scoreTable.getColumnModel().getColumn(2).setPreferredWidth(170);
+
+	TableCellRenderer tcr = scoreTable.getDefaultRenderer(String.class);
+	DefaultTableCellRenderer dtcr = (DefaultTableCellRenderer) tcr;
+	dtcr.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+
+	skillList.setSelectedValue(settings.getSkill(), true);
+	setRelationTableCellRenderer(settings.getSkill());
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -105,10 +109,10 @@ public class StatisticsDialog extends javax.swing.JDialog {
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-410)/2, (screenSize.height-330)/2, 410, 330);
     }// </editor-fold>//GEN-END:initComponents
-    
+
 private void skillListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_skillListValueChanged
     if (!evt.getValueIsAdjusting()) {
-        showData();
+	showData();
     }
 }//GEN-LAST:event_skillListValueChanged
 
@@ -116,43 +120,57 @@ private void CloseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     dispose();
 }//GEN-LAST:event_CloseButtonActionPerformed
 
-protected ListModel getLevelModel() {
-    if (levelModel == null) {
-        levelModel = new DefaultListModel();
-        levelModel.addElement(Skill.NOVICE);
-        levelModel.addElement(Skill.NORMAL);
-        levelModel.addElement(Skill.MASTER);
-        levelModel.addElement(Skill.EXPERT);
+    protected ListModel getLevelModel() {
+	if (levelModel == null) {
+	    levelModel = new DefaultListModel();
+	    levelModel.addElement(Skill.NOVICE);
+	    levelModel.addElement(Skill.NORMAL);
+	    levelModel.addElement(Skill.MASTER);
+	    levelModel.addElement(Skill.EXPERT);
+	}
+	return levelModel;
     }
-    return levelModel;
-}
 
-protected TableModel getStatisticsTableModel() {
-    if (statisticsTableModel == null) {
-        statisticsTableModel = new DefaultTableModel();
-        statisticsTableModel.addColumn(bundle.getString("statistics.dialog.order.title"));
-        statisticsTableModel.addColumn(bundle.getString("statistics.dialog.score.title"));
-        statisticsTableModel.addColumn(bundle.getString("statistics.dialog.date.title"));
+    protected TableModel getStatisticsTableModel() {
+	if (statisticsTableModel == null) {
+	    statisticsTableModel = new DefaultTableModel();
+	    statisticsTableModel.addColumn(bundle.getString("statistics.dialog.order.title"));
+	    statisticsTableModel.addColumn(bundle.getString("statistics.dialog.score.title"));
+	    statisticsTableModel.addColumn(bundle.getString("statistics.dialog.date.title"));
+	}
+	return statisticsTableModel;
     }
-    return statisticsTableModel;
-}
 
-protected void showData() {
-    log.info("Showing data...");
-    statisticsTableModel.setRowCount(0);
-    Skill skill = (Skill)skillList.getSelectedValue();
-    if (skill == null) {
-        skill = settings.getSkill();
-        skillList.setSelectedValue(skill, true);
-        
+    protected void showData() {
+	log.info("Showing data...");
+	statisticsTableModel.setRowCount(0);
+	Skill skill = (Skill) skillList.getSelectedValue();
+	if (skill == null) {
+	    skill = settings.getSkill();
+	    skillList.setSelectedValue(skill, true);
+
+	}
+	Set<Score> scores = settings.getSkillScores(skill);
+	int idx = 1;
+	setRelationTableCellRenderer(skill);
+	for (Score score : scores) {
+	    statisticsTableModel.addRow(new Object[]{new Integer(idx++),
+			score.getScore(), dateFormat.format(score.getDate())
+		    });
+	}
     }
-    Set<Score> scores = settings.getSkillScores(skill);
-    int idx = 1;
-    for (Score score : scores) {
-        statisticsTableModel.addRow(new Object[] { new Integer(idx++),
-        score.getScore(), dateFormat.format(score.getDate()) });
+    
+    private void setRelationTableCellRenderer(Skill skill) {
+        ColorTextCellRenderer cellRenderer = new ColorTextCellRenderer();
+	DefaultTableCellRenderer defaultCellRenderer = new DefaultTableCellRenderer();
+	if (newScoreIndex > -1) {
+	    cellRenderer.setHighlightRow(newScoreIndex);
+	}
+	TableColumnModel columnModel = scoreTable.getColumnModel();
+	for (int idx = 0; idx < columnModel.getColumnCount(); idx ++) {
+	    columnModel.getColumn(idx).setCellRenderer(settings.getSkill() == skill ? cellRenderer : defaultCellRenderer);
+	}
     }
-}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CloseButton;
@@ -163,5 +181,4 @@ protected void showData() {
     private javax.swing.JList skillList;
     private javax.swing.JScrollPane skillListScrollPane;
     // End of variables declaration//GEN-END:variables
-    
 }

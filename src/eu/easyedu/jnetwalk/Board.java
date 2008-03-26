@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -341,8 +340,9 @@ public class Board extends javax.swing.JPanel {
     protected void endGame() {
         log.info(" Game with skill " + getSettings().getSkill().toDefaultString() + " was successfully ended in " +
                 getClickCount() + " clicks");
-        getSettings().addNewScore(new Score(getClickCount(), new Date(), System.getProperty("user.name")));
-        fireGameOverEvent();
+	Score score = new Score(getClickCount(), new Date(), System.getProperty("user.name"));
+        getSettings().addNewScore(score);
+        fireGameOverEvent(score);
 //        int n = JOptionPane.showConfirmDialog(this, "Cool. Do you wish to start new game?",
 //                "Game Over", JOptionPane.YES_NO_OPTION);
 //        if (n == JOptionPane.YES_OPTION) {
@@ -420,9 +420,9 @@ public class Board extends javax.swing.JPanel {
         return new Dimension(getBoardSize() * 32, getBoardSize() * 32);
     }
 
-    private void fireGameOverEvent() {
+    private void fireGameOverEvent(Score score) {
         for (BoardEventListener robotEventListener : gameOverListeners) {
-            robotEventListener.gameOverEvent(new BoardEvent());
+            robotEventListener.gameOverEvent(new BoardEvent(score));
         }
     }
 
