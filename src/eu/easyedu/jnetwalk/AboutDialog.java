@@ -27,8 +27,8 @@ public class AboutDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         iconButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        jLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
         versionLabel = new javax.swing.JLabel();
         versionTitleLabel = new javax.swing.JLabel();
         authorTitleLabel = new javax.swing.JLabel();
@@ -36,7 +36,7 @@ public class AboutDialog extends javax.swing.JDialog {
         homepageTitleLabel = new javax.swing.JLabel();
         emailLabel = new javax.swing.JLabel();
         emailTitleLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        noteLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
         jTextPane1 = new javax.swing.JTextPane();
@@ -60,16 +60,16 @@ public class AboutDialog extends javax.swing.JDialog {
         getContentPane().add(iconButton);
         iconButton.setBounds(5, 5, 50, 50);
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 24));
-        jLabel2.setForeground(new java.awt.Color(255, 51, 51));
-        jLabel2.setText("J");
-        getContentPane().add(jLabel2);
-        jLabel2.setBounds(69, 14, 10, 29);
+        jLabel.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel.setText("J");
+        getContentPane().add(jLabel);
+        jLabel.setBounds(69, 14, 10, 29);
 
-        jLabel9.setFont(new java.awt.Font("Dialog", 1, 24));
-        jLabel9.setText("NetWalk");
-        getContentPane().add(jLabel9);
-        jLabel9.setBounds(84, 14, 101, 29);
+        nameLabel.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        nameLabel.setText("NetWalk");
+        getContentPane().add(nameLabel);
+        nameLabel.setBounds(84, 14, 101, 29);
 
         versionLabel.setText(bundle.getString("about.dialog.version")); // NOI18N
         getContentPane().add(versionLabel);
@@ -99,9 +99,9 @@ public class AboutDialog extends javax.swing.JDialog {
         getContentPane().add(emailTitleLabel);
         emailTitleLabel.setBounds(20, 100, 110, 15);
 
-        jLabel1.setText(bundle.getString("about.dialog.note.title")); // NOI18N
-        getContentPane().add(jLabel1);
-        jLabel1.setBounds(20, 140, 110, 15);
+        noteLabel.setText(bundle.getString("about.dialog.note.title")); // NOI18N
+        getContentPane().add(noteLabel);
+        noteLabel.setBounds(20, 140, 110, 15);
 
         jTextPane2.setEditable(false);
         jTextPane2.setText(bundle.getString("about.dialog.note")); // NOI18N
@@ -152,12 +152,12 @@ private void iconButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private eu.easyedu.jnetwalk.utils.JHyperlinkLabel homepageLabel;
     private javax.swing.JLabel homepageTitleLabel;
     private javax.swing.JButton iconButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JLabel noteLabel;
     private javax.swing.JLabel versionLabel;
     private javax.swing.JLabel versionTitleLabel;
     // End of variables declaration//GEN-END:variables
