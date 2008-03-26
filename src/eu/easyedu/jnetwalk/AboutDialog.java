@@ -34,13 +34,13 @@ public class AboutDialog extends javax.swing.JDialog {
         authorTitleLabel = new javax.swing.JLabel();
         authorLabel = new javax.swing.JLabel();
         homepageTitleLabel = new javax.swing.JLabel();
-        homepageLabel = new javax.swing.JLabel();
         emailLabel = new javax.swing.JLabel();
         emailTitleLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
         jTextPane1 = new javax.swing.JTextPane();
+        homepageLabel = new eu.easyedu.jnetwalk.utils.JHyperlinkLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("eu/easyedu/jnetwalk/Bundle"); // NOI18N
@@ -60,13 +60,13 @@ public class AboutDialog extends javax.swing.JDialog {
         getContentPane().add(iconButton);
         iconButton.setBounds(5, 5, 50, 50);
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 24));
         jLabel2.setForeground(new java.awt.Color(255, 51, 51));
         jLabel2.setText("J");
         getContentPane().add(jLabel2);
         jLabel2.setBounds(69, 14, 10, 29);
 
-        jLabel9.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 24));
         jLabel9.setText("NetWalk");
         getContentPane().add(jLabel9);
         jLabel9.setBounds(84, 14, 101, 29);
@@ -91,10 +91,6 @@ public class AboutDialog extends javax.swing.JDialog {
         getContentPane().add(homepageTitleLabel);
         homepageTitleLabel.setBounds(20, 120, 110, 15);
 
-        homepageLabel.setText(bundle.getString("about.dialog.web")); // NOI18N
-        getContentPane().add(homepageLabel);
-        homepageLabel.setBounds(140, 120, 230, 15);
-
         emailLabel.setText(bundle.getString("about.dialog.mail")); // NOI18N
         getContentPane().add(emailLabel);
         emailLabel.setBounds(140, 100, 230, 15);
@@ -117,6 +113,11 @@ public class AboutDialog extends javax.swing.JDialog {
 
         getContentPane().add(jScrollPane1);
         jScrollPane1.setBounds(140, 140, 230, 70);
+
+        homepageLabel.setText("hlavki.blogspot.com");
+        homepageLabel.setURL("http://hlavki.blogspot.com");
+        getContentPane().add(homepageLabel);
+        homepageLabel.setBounds(140, 120, 126, 15);
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         setBounds((screenSize.width-391)/2, (screenSize.height-260)/2, 391, 260);
@@ -148,7 +149,7 @@ private void iconButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JLabel authorTitleLabel;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel emailTitleLabel;
-    private javax.swing.JLabel homepageLabel;
+    private eu.easyedu.jnetwalk.utils.JHyperlinkLabel homepageLabel;
     private javax.swing.JLabel homepageTitleLabel;
     private javax.swing.JButton iconButton;
     private javax.swing.JLabel jLabel1;
