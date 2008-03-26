@@ -32,9 +32,8 @@ public class MainFrame extends javax.swing.JFrame {
                 statusLabel.setText("Click: " + propertyChangeEvent.getNewValue());
             }
         });
-        board.addGameOverListener(new BoardEventAdapter() {
+        board.addGameOverListener(new BoardEventListener() {
 
-            @Override
             public void gameOverEvent(BoardEvent robotEvent) {
                 gameOverPerformed(robotEvent);
             }
@@ -143,6 +142,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         menuBar.add(gameMenu);
 
+        settingsMenu.setMnemonic(java.util.ResourceBundle.getBundle("eu/easyedu/jnetwalk/Bundle").getString("settings.menu.item.mnemonics").charAt(0));
         settingsMenu.setText(bundle.getString("settings.menu.item")); // NOI18N
 
         levelMenu.setText(bundle.getString("level.menu.item")); // NOI18N
@@ -300,9 +300,15 @@ private void playSoundMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         }
     }
 
-    protected void showStatistics() {
-        StatisticsDialog statisticsDialog = new StatisticsDialog(board.getSettings(), this, true);
+    protected void showStatistics(Score newScore) {
+	Settings settings = board.getSettings();
+	int newScoreIndex = settings.getScoreIndex(newScore);
+        StatisticsDialog statisticsDialog = new StatisticsDialog(board.getSettings(), newScoreIndex, this, true);
         statisticsDialog.setVisible(true);
+    }
+
+    protected void showStatistics() {
+	showStatistics(null);
     }
 
     protected void showAboutDialog() {
@@ -318,7 +324,7 @@ private void playSoundMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     }
 
     public void gameOverPerformed(BoardEvent evt) {
-        showStatistics();
+        showStatistics(evt.getScore());
     }
 
     public void setLevelComboBox() {

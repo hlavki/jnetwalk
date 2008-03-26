@@ -16,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.EnumMap;
+import java.util.Iterator;
 import java.util.SortedSet;
 import java.util.Map;
 import java.util.TreeSet;
@@ -54,6 +55,7 @@ public class Settings implements Serializable {
     }
     
     public final void addNewScore(Score newScore) {
+	log.info("Adding new score with hash " + newScore.hashCode());
         SortedSet<Score> skillScores = getSkillScores();
         skillScores.add(newScore);
         while (skillScores.size() > MAX_SCORE_SIZE) {
@@ -114,5 +116,20 @@ public class Settings implements Serializable {
         } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
         }
+    }
+
+    public int getScoreIndex(Score newScore) {
+	int idx = 0, scoreIndex = -1;
+	SortedSet<Score> skillScores = getSkillScores();
+	Iterator<Score> it = skillScores.iterator();
+	int size = skillScores.size();
+	while (newScore != null && idx < size && scoreIndex == -1) {
+	    Score score = it.next();
+	    if (newScore.equals(score)) {
+		scoreIndex = idx;
+	    }
+	    idx++;
+	}
+	return scoreIndex;
     }
 }
